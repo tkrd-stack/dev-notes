@@ -22,8 +22,8 @@ async function main() {
 
   const meta = { date: todayStr(), tags: ['dev','memo'] };
 
-  // ※ 日次ノート（daily/）に追記。FMは既存なら付けない
-  await appendNote(`daily/${todayStr()}.md`, out, meta);
+  // ※ 日次ノート（dev-note/）に追記。FMは既存なら付けない
+  await appendNote(`dev-note/${todayStr()}.md`, out, meta);
 
   console.log(`✓ memo appended to dev-note/${todayStr()}.md`);
 }
