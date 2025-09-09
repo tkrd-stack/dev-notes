@@ -19,6 +19,7 @@ export async function askClaude(system: string, user: string): Promise<string> {
     })
   });
   const json = await res.json();
+  console.log('Claude API response:', json);
   // @ts-ignore
   return json.content?.[0]?.text ?? '';
 }
