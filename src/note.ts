@@ -1,6 +1,6 @@
 import { askClaude } from './lib/ai';
 import { todayStr } from './lib/clock';
-import { appendNote } from './lib/appendNote'; // ← これがFM一回だけロジック
+import { appendNote } from './lib/appendNote'; // FMは最初の1回だけにするユーティリティ
 
 async function main() {
   const input = process.argv.slice(2).join(' ').trim();
@@ -18,17 +18,17 @@ async function main() {
   const user = `メモ: ${input}`;
 
   const out = await askClaude(system, user);
-  console.log('AIからの応答を受信しました。', out);
+  console.log('AIからの応答を受信しました。');
 
-  const meta = {
-    date: todayStr(),
-    tags: ['dev', 'memo'],
-  };
+  const meta = { date: todayStr(), tags: ['dev','memo'] };
 
-  console.log('メモをファイルに追記しています...');
-  await appendNote(`dev-logs/${todayStr()}.md`, out, meta);
+  // ※ 日次ノート（daily/）に追記。FMは既存なら付けない
+  await appendNote(`daily/${todayStr()}.md`, out, meta);
 
-  console.log(`✓ memo appended to dev-logs/${todayStr()}.md`);
+  console.log(`✓ memo appended to dev-note/${todayStr()}.md`);
 }
 
-main();
+main().catch(e => {
+  console.error('note failed:', e);
+  process.exit(1);
+});
