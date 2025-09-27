@@ -2,6 +2,13 @@ import 'dotenv/config';
 
 export function todayStr() {
   const tz = process.env.TIMEZONE || 'Asia/Tokyo';
-  const d = new Date(new Date().toLocaleString('en-US', { timeZone: tz }));
-  return d.toISOString().slice(0,10); // YYYY-MM-DD
+  const now = new Date();
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: tz,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).formatToParts(now);
+  const map = Object.fromEntries(parts.map(part => [part.type, part.value]));
+  return `${map.year}-${map.month}-${map.day}`;
 }
