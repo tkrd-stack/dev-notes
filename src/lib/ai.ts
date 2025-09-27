@@ -20,6 +20,21 @@ export async function askClaude(system: string, user: string): Promise<string> {
   });
   const json = await res.json();
   console.log('Claude API response:', json);
-  // @ts-ignore
-  return json.content?.[0]?.text ?? '';
+
+  if (!res.ok) {
+    const message = json?.error?.message ?? json?.error ?? res.statusText;
+    throw new Error(`Claude API request failed: ${message}`);
+  }
+
+  if (json?.type === 'error' || json?.error) {
+    const message = json?.error?.message ?? json?.error ?? 'Unknown error';
+    throw new Error(`Claude API responded with an error: ${message}`);
+  }
+
+  const content = json?.content?.[0]?.text;
+  if (typeof content !== 'string' || !content.trim()) {
+    throw new Error('Claude API returned no content');
+  }
+
+  return content;
 }
