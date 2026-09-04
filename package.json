@@ -6,6 +6,7 @@
 
   "scripts": {
     "note": "ts-node src/note.ts",
+    "knowledge": "ts-node src/knowledge.ts",
     "wrapup": "ts-node src/wrapup.ts",
     "hook:post-commit": "ts-node src/hooks/post-commit.ts",
     "hooks:install": "bash scripts/install-hooks.sh"
